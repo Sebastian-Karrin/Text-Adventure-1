@@ -8,6 +8,16 @@ namespace TextAdventure
         public int Health = 100;
         public List<string> Items = new List<string>();
         public string location = "newgame";
+
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+        }
+
+        public bool IsDead()
+        {
+            return Health <=0;
+        }
     }
 
     class Enemy //Enemy Class
@@ -220,7 +230,7 @@ namespace TextAdventure
                                       "You pull your hand out of the corpses pocket and you see a snake" +
                                       " slithering out.\n" +
                                       "You lose 10hp");
-                    hero.Health -= 10;
+                    hero.TakeDamage(10);
                     Console.WriteLine("Current health: " + hero.Health);
                     Console.Read();
                 }
