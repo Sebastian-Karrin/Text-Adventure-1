@@ -8,7 +8,22 @@ namespace TextAdventure
         public int Health = 100;
         public List<string> Items = new List<string>();
         public string location = "newgame";
-    } 
+    }
+
+    class Enemy //Enemy Class
+    {
+        public string enemyName;
+        public int enemyHealth;
+        public int enemyDamage;
+
+        public Enemy(string name, int health, int damage)
+        {
+            enemyName = name;
+            enemyHealth = health;
+            enemyDamage  = damage;
+        } 
+        
+    }
     
    /* class Items // Items Class
     {
@@ -24,6 +39,13 @@ namespace TextAdventure
 
     class Program
     {
+        static int RollD6() // RNG
+        {
+            Random random = new Random();
+            int roll = random.Next(1, 7);
+            return roll;
+        }
+        
         static string Ask(string question)
         {
             string response;
@@ -124,9 +146,9 @@ namespace TextAdventure
                 {
                     Console.WriteLine("You enter the key into the keyhole and the door opens");
                     Console.Read();
-                    hero.location = "nyckelrum";
+                    hero.location = "Nyckelrum";
                     hero.Items.Remove("key");
-                }
+                } 
                 else
                 {
                     Console.WriteLine("You didnt have the key so you enter the other room");
@@ -140,6 +162,70 @@ namespace TextAdventure
                 Console.WriteLine("You enter the room to the right");
                 Console.Read();
                 hero.location = "puzzleroom";
+            }
+        }
+
+        static void Nyckelrum(Hero hero)  // NyckelRum
+        {
+            Console.Clear();
+            Console.WriteLine("You enter a gloomy room \n" +
+                              "You can make out a faint sillhouette of a oxidized copper chest\n" +
+                              "As you make your way to it, you feel the presence of something mighty\n" +
+                              "Inside of the chest you find a weathered gun\n" +
+                              "But you only have enough space in your inventory for your wooden sword\n");
+                if (AskYesOrNo("Would you like to get rid of your wooden sword and pick up the weathered gun? "))
+            { Console.Clear();
+            Console.WriteLine("you get rid of the sword and holster the new weapon");
+            hero.Items.Remove("wooden sword");
+            hero.Items.Add("gun");
+            Console.Read();
+            }
+            hero.location = "puzzleroom";
+
+
+        }
+        
+        static void Puzzleroom(Hero hero) // Puzzleroom
+        {
+            
+            Console.Clear();
+            Console.WriteLine(" You enter the room and leaning against one of the walls you find a corpse\n" +
+                              " You approach the corpse and it looks like it has something in its pocket");
+            if (AskYesOrNo("Do you want to loot the corpse? "))
+            {
+                if (RollD6() >= 4)
+                {
+                    if (hero.Items.Contains("gun"))
+                    { 
+                        Console.Clear();
+                        Console.WriteLine("You find some kind of oil\n" +
+                                          "Maybe it's apliable to a gun?");
+                        hero.Items.Add("Oil");
+                        Console.Read();
+
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("You find what looks to be a healing poition!");
+                        hero.Items.Add("Potion");
+                        Console.Read();
+                    }
+                    
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine(" You reach into the corpses pocket and you feel the sting of pain!\n" +
+                                      "You pull your hand out of the corpses pocket and you see a snake" +
+                                      " slithering out.\n" +
+                                      "You lose 10hp");
+                    hero.Health -= 10;
+                    Console.WriteLine("Current health: " + hero.Health);
+                    Console.Read();
+                }
+
+                
             }
 
         }
@@ -162,6 +248,13 @@ namespace TextAdventure
                 } else if (hero.location == "Corridor")
                 {
                     Corridor(hero);
+                } else if (hero.location == "Nyckelrum")
+                {
+                    Nyckelrum(hero);
+                    
+                } else if (hero.location == "puzzleroom")
+                {
+                    Puzzleroom(hero);
                 }
                 else
                 {
