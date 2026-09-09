@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\bebbe\\Documents\\TextAdventureBackupp\\TextAdventureBackupp.csproj",
-      "projectName": "TextAdventureBackupp",
-      "projectPath": "C:\\Users\\bebbe\\Documents\\TextAdventureBackupp\\TextAdventureBackupp.csproj",
+      "projectUniqueName": "C:\\Users\\bebbe\\Documents\\TextAdventure\\TextAdventure.csproj",
+      "projectName": "TextAdventure",
+      "projectPath": "C:\\Users\\bebbe\\Documents\\TextAdventure\\TextAdventure.csproj",
       "packagesPath": "C:\\Users\\bebbe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\bebbe\\Documents\\TextAdventureBackupp\\obj\\",
+      "outputPath": "C:\\Users\\bebbe\\Documents\\TextAdventure\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\bebbe\\AppData\\Roaming\\NuGet\\NuGet.Config"
