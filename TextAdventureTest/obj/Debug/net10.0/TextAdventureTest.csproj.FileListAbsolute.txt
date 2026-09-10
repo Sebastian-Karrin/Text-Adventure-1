@@ -1,0 +1,14 @@
+C:\Users\bebbe\Documents\TextAdventureTest\bin\Debug\net10.0\TextAdventureTest.exe
+C:\Users\bebbe\Documents\TextAdventureTest\bin\Debug\net10.0\TextAdventureTest.deps.json
+C:\Users\bebbe\Documents\TextAdventureTest\bin\Debug\net10.0\TextAdventureTest.runtimeconfig.json
+C:\Users\bebbe\Documents\TextAdventureTest\bin\Debug\net10.0\TextAdventureTest.dll
+C:\Users\bebbe\Documents\TextAdventureTest\bin\Debug\net10.0\TextAdventureTest.pdb
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\TextAdventureTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\TextAdventureTest.AssemblyInfoInputs.cache
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\TextAdventureTest.AssemblyInfo.cs
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\TextAdventureTest.csproj.CoreCompileInputs.cache
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\TextAdventureTest.dll
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\refint\TextAdventureTest.dll
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\TextAdventureTest.pdb
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\TextAdventureTest.genruntimeconfig.cache
+C:\Users\bebbe\Documents\TextAdventureTest\obj\Debug\net10.0\ref\TextAdventureTest.dll
