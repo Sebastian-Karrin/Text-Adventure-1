@@ -82,13 +82,16 @@ namespace TextAdventure
                     Console.Clear();
                     Console.WriteLine($"Your Health:{hero.Health}\n" +
                                       $"{enemy.enemyName} Health: {enemy.enemyHealth}");
+                    
+                    
+                    Console.WriteLine("Your Choices: ");
                     foreach (string BattleItem in hero.BattleItems)
                     {
                         Console.Write(BattleItem);
                     }
-                    
-                    string battleitem = Ask($"Your Choices: {hero.BattleItems}\n" +
-                                            $"What is your choice?").Trim().ToLower();
+
+                    string battleitem = Ask("What do you choose?").Trim().ToLower();
+                   
                     if (hero.BattleItems.Contains(hero.equip))
                     {
                         Console.Clear();
