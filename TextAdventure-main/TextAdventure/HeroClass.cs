@@ -10,8 +10,7 @@
         public bool block;
         public int Damage;
         public string equip;
-
-
+        
         public void Potion()
         {
             Health += 30;
@@ -32,6 +31,14 @@
             block = false;
             return amount;
         }
+       
+        public int Mend(int amount)
+        {
+            amount += 2;
+            Health += amount;
+            return amount;
+        }
+
 
         public int GiveDamage()
         {

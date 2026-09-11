@@ -43,6 +43,7 @@ namespace TextAdventure
             Console.WriteLine($"You enter combat with {enemy.enemyName}");
             Console.ReadLine();
             hero.BattleItems.Add("block");
+            hero.BattleItems.Add("mend");
             while (!hero.HeroIsDead() && !enemy.EnemyIsDead())
             {
                 do
@@ -52,7 +53,7 @@ namespace TextAdventure
                                       $"{enemy.enemyName} Health: {enemy.enemyHealth}");
 
 
-                    Console.WriteLine("Your Choices: ");
+                    Console.WriteLine("Your Choices:  ");
                     foreach (string BattleItem in hero.BattleItems)
                     {
                         Console.Write("[" + BattleItem + "]" + ", ");
@@ -63,7 +64,7 @@ namespace TextAdventure
                     if (hero.BattleItems.Contains(battleitem))
                     {
                         Console.Clear();
-                        Console.WriteLine($"You used {battleitem}");
+                        Console.WriteLine("You used" + "[" + $"{battleitem}" + "]");
                         hero.equip = battleitem;
                         if (hero.equip == "wooden sword" || hero.equip == "gun" || hero.equip == "knife" ||
                             hero.equip == "fine gun")
@@ -78,6 +79,13 @@ namespace TextAdventure
                             hero.Potion();
                             hero.BattleItems.Remove("potion");
                         }
+                        if (battleitem == "sus potion")
+                        {
+                            Console.WriteLine("You healed 50 Health and start to feel strange");
+                            Console.Read();
+                            hero.BattleItems.Remove("sus potion");
+                            hero.Health += 50;
+                        }
 
                         if (battleitem == "block")
                         {
@@ -85,52 +93,64 @@ namespace TextAdventure
                             Console.Read();
                             hero.block = true;
                         }
-
+                        if (battleitem == "mend")
+                        {
+                            Console.WriteLine($"You use what little scraps of torn fabric in your pocket to mend you wounds\n" +
+                                              $"You mend {hero.Mend(RollD6())} health");
+                            Console.ReadKey();
+                        }
                         break;
                     }
                 } while (true);
 
-                Console.Clear();
-                Console.WriteLine($"{enemy.enemyName}'s Turn");
-                Console.ReadLine();
-                int monsterdecision = RollD6();
-                if (RollD6() >= 4)
+                switch (enemy.EnemyIsDead())
                 {
-                    Console.Clear();
-                    Console.WriteLine($"The {enemy.enemyName} used Tackle");
-                    Console.WriteLine("You took " + $"{hero.TakeDamage(enemy.GiveDamage())}" + " damage");
-                    Console.ReadLine();
-                }
-                else if (monsterdecision >= 2 && monsterdecision < 4)
-                    switch (enemy.empower)
-                    {
-                        case false:
+                    case false:
+
+
+                        Console.Clear();
+                        Console.WriteLine($"{enemy.enemyName}'s Turn");
+                        Console.ReadLine();
+                        int monsterdecision = RollD6();
+                        if (RollD6() >= 4)
+                        {
                             Console.Clear();
-                            Console.WriteLine($"The {enemy.enemyName} used Empower");
-                            enemy.empower = true;
-                            Console.WriteLine("Next attack is going to be stronger!");
+                            Console.WriteLine($"The {enemy.enemyName} used Tackle");
+                            Console.WriteLine("You took " + $"{hero.TakeDamage(enemy.GiveDamage())}" + " damage");
                             Console.ReadLine();
-                            break;
-                        case true:
-                            break;
-                    }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine($"The {enemy.enemyName} is resting");
-                    Console.WriteLine($"The {enemy.enemyName} healed {enemy.Rest()} health");
-                    Console.ReadLine();
+                        }
+                        else if (monsterdecision >= 2 && monsterdecision < 4)
+                            switch (enemy.empower)
+                            {
+                                case false:
+                                    Console.Clear();
+                                    Console.WriteLine($"The {enemy.enemyName} used Empower");
+                                    enemy.empower = true;
+                                    Console.WriteLine("Next attack is going to be stronger!");
+                                    Console.ReadLine();
+                                    break;
+                                case true:
+                                    break;
+                            }
+                        else
+                        {
+                            Console.Clear();
+                            Console.WriteLine($"The {enemy.enemyName} is resting");
+                            Console.WriteLine($"The {enemy.enemyName} healed {enemy.Rest()} health");
+                            Console.ReadLine();
+                        }
+
+                        hero.block = false;
+                        break;
+                    case true:
+                        Console.Clear();
+                        Console.WriteLine($"You defeated {enemy.enemyName}");
+                        Console.ReadLine();
+                        hero.BattleItems.Remove("block");
+                        hero.BattleItems.Remove("mend");
+                        break;
                 }
-
-                hero.block = false;
             }
-
-            if (enemy.EnemyIsDead())
-            {
-                Console.Clear();
-                Console.WriteLine($"You defeated {enemy.enemyName}");
-            }
-
             if (hero.HeroIsDead())
             {
                 Console.Clear();
@@ -152,7 +172,7 @@ namespace TextAdventure
         {
 
             Console.Clear();
-            Console.WriteLine($"You used {hero.equip}");
+            Console.WriteLine("You used ["+ $"{hero.equip}" + "]");
             Console.ReadLine();
             int amount = 0;
 
@@ -177,15 +197,24 @@ namespace TextAdventure
                     amount = 0;
                 }
             }
-
+            
             if (hero.equip == "wooden sword")
             {
-                amount = 5;
+                amount = 100;
             }
 
             if (hero.equip == "knife")
             {
-                amount = 8;
+                int i;
+                for (i = 0; i < 5; i++)
+                {
+                    if (RollD6() <= 5) ;
+                    else break;
+                }
+
+                Console.Clear();
+                Console.WriteLine($"you stabbed the {enemy.enemyName} {i} times");
+                amount = i * 2;
             }
 
             hero.Damage = amount;
@@ -412,7 +441,7 @@ namespace TextAdventure
 
         static void Fightroom1(Hero hero) //Fightroom1
         {
-            Enemy enemy1 = new Enemy("Sentient Rock", 20, 5, "stubbed your toe");
+            Enemy enemy1 = new Enemy("Sentient Rock", 20, 3, "stubbed your toe");
 
             Console.Clear();
             Console.WriteLine("You enter to find a room dimly lit with torches lining the walls. \n" +
@@ -459,6 +488,7 @@ namespace TextAdventure
                     hero.Items.Remove("oil");
                     hero.BattleItems.Add("fine gun");
                     Console.ReadLine();
+                    hero.location = "bossroom";
                 }
                 else
                 {
@@ -482,35 +512,121 @@ namespace TextAdventure
 
         static void Bossroom(Hero hero) //Bossrum
         {
-            Enemy enemy2 = new Enemy("Minotaur", 100, 10, "Slashed you");
+            Enemy enemy2 = new Enemy("Dark Knight", 100, 10, "Slashed you");
             Console.Clear();
             Console.WriteLine("As you open the doors to the grand hall you feel great pressure from the within.\n" +
                               "You continue deeper as thick fog covers the sides and corners of the spacious hall.\n" +
                               "Suddenly, as you reach the dead center of the eerie room, something big lands in front of you with a thud.\n" +
-                              "It got horns as the devil himself, equipped with a big, bloody Sword\n" +
+                              "Clad in armor as black as tar, its eyes filled with enough rage that only the devil could match them, equipped with a big, bloody Sword\n" +
                               "You feel your pulse increase as you ready yourself for what seems to be a dangerous battle");
             Console.ReadLine();
 
             Fight(hero, enemy2);
+            
+            if (hero.HeroIsDead())
+            {
+                hero.location = "quit";
 
-            Console.Clear();
-            Console.WriteLine($"With a gurgling roar, the {enemy2.enemyName} falls lifeless to the ground.\n" +
-                              "You feel the fog and pressure disappearing from the hall\n" +
-                              "You finally feel at peace as you continue to the golden door in the end of the room,\n" +
-                              "As you get closer you see a strobing green, brightly lit sign hanging from the roof.\n" +
-                              "spelled on it is EMERGENCY EXIT\n");
-            Console.ReadLine();
-            Console.Clear();
-            Console.WriteLine("This is it...");
-            Console.ReadLine();
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine($"With a gurgling roar, the {enemy2.enemyName} falls lifeless to the ground.\n" +
+                                  "You feel the fog and pressure disappearing from the hall\n" +
+                                  "You finally feel at peace as you continue to the golden door in the end of the room,\n" +
+                                  "As you get closer you see a strobing green, brightly lit sign hanging from the roof.\n" +
+                                  "spelled on it is EMERGENCY EXIT\n");
+                enemy2 = null;
+                Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("This is it...");
+                Console.ReadLine();
+                switch (AskYesOrNo("Do you want to leave through the door?"))
+                {
+                    case true:
+                        Console.Clear();
+                        Console.WriteLine("When you get close enough to the door it starts opening on its own. \n" +
+                                          "From within a bright light starts showing and you find yourself being pulled towards it. \n" +
+                                          "Once you get pulled through the door you start to get pulled upwards, \n" +
+                                          "and what fills your vision as you are flying, is a sky full of stars that may lead to a new life of freedom");
+                        Console.ReadLine();
+                        hero.location = "quit";
+                        break;
+                    case false:
+                        Console.Clear();
+                        Console.WriteLine(
+                            "You decide to stop approaching the door, and while you stand there staring at it you start to feel the ground tremble.\n" +
+                            "The floor beneath your feet crumbles, leaving you in a freefall down into the abyss");
+                        Console.ReadLine();
+                        hero.location = "abyss";
+                        break;
+            }
+            
+            }
         }
 
+        static void Abyss(Hero hero) //Abyss
+        {
+            Enemy enemy3 = new Enemy("Skeleton", 50, 7, "bonked you with a femur");
+            Enemy enemy4 = new Enemy("Gorgon", 80, 6, "swiped at you with its tail");
+            Enemy enemy5 = new Enemy("Cyclops", 90, 7, "picks you up and throws you against the wall");
+            hero.BattleItems.Add ("sus potion");
+            Console.Clear();
+            Console.WriteLine(
+                "You fall for an undetermined amount of time and suddenly see something approaching rapidly!\n" +
+                "You crash into the ground, but luckily for you it seems like a large pile of bones broke your fall!\n" +
+                "As you try to recover something falls on your back\n" +
+                "You quickly grab the item that fell on you and it seems to be a potion\n" +
+                "As you try to process what just happened you find yourself surrounded by 3 monsters. ");
+            Console.ReadLine();
+            Fight(hero, enemy3);
+            enemy3 = null;
+            if (!hero.HeroIsDead())
+            {
+                Fight(hero, enemy4);
+                enemy4 = null;
+                if (!hero.HeroIsDead())
+                {
+                    Fight(hero,enemy5);
+                    enemy5 = null;
+                    if (!hero.HeroIsDead())
+                    {
+                        switch (!hero.BattleItems.Contains("sus potion"))
+                        {
+                            case true:
+                                Console.Clear();
+                                Console.WriteLine(
+                                    "The joy of your victory is short lived as you feel an unimaginable rage well up from deep within you\n" +
+                                    "You become a Dark Knight, guardian of the dungeon!!!!\n" +
+                                    "The dungeon itself reacts to your transformation, dragging you up out of the abyss and repairing the floor you once fell through\n" +
+                                    "And there you remain standing, until another challenger comes to try and escape!!! ");
+                                Console.ReadLine();
+                                hero.location = "quit";
+                                break;
+                            case false:
+                                Console.Clear();
+                                Console.WriteLine(
+                                    "As you stand there basking in the joy of your victory, a sudden realazation sends a chill down your spine!`\n" +
+                                    "There is no way out of the abyss");
+                                Console.ReadLine();
+                                hero.location = "quit";
+                                break;
+                                
+                        }
+                        
+                        
+                    }
+                }
+            }
+            else hero.location = "quit";
+            
+        }
+        
         static void Quit(Hero hero) // Quit
         {
             Console.Clear();
             Console.WriteLine(
-                "As you feel unconsciousness approaching you get an ominous feeling at the back of your neck!\n" +
-                "As you wake up not knowing how much time has passed,");
+                "As you feel unconsciousness approaching you get an ominous feeling at the back of your neck!");
             Console.ReadLine();
             switch (!AskYesOrNo("Do you want to quit the game?"))
             {
@@ -518,10 +634,15 @@ namespace TextAdventure
                     hero.Items.Clear();
                     hero.BattleItems.Clear();
                     hero.Health = 100;
-                    hero.HeroIsDead();
+                    Console.Clear();
+                    Console.WriteLine("You wake up not knowing how much time has passed\n" +
+                                      "");
+                    Console.ReadLine();
                     hero.location = "newgame";
                     break;
                 case false:
+                    Console.WriteLine("Game over!");
+                    Console.ReadLine();
                     Environment.Exit(0);
                     break;
             }
@@ -572,6 +693,10 @@ namespace TextAdventure
                 else if (hero.location == "bossroom")
                 {
                     Bossroom(hero);
+                }
+                else if (hero.location == "abyss")
+                {
+                    Abyss(hero);
                 }
                 else
                 {
