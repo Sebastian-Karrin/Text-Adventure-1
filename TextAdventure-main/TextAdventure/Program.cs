@@ -7,7 +7,6 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace TextAdventure
 {
-
 /*    class Items // Items Class // Ej funktionell
     {
         public string itemName;
@@ -36,7 +35,6 @@ namespace TextAdventure
 */
     class Program
     {
-
         static void Fight(Hero hero, Enemy enemy) // Fight
         {
             Console.Clear();
@@ -79,6 +77,7 @@ namespace TextAdventure
                             hero.Potion();
                             hero.BattleItems.Remove("potion");
                         }
+
                         if (battleitem == "sus potion")
                         {
                             Console.WriteLine("You healed 50 Health and start to feel strange");
@@ -93,12 +92,15 @@ namespace TextAdventure
                             Console.Read();
                             hero.block = true;
                         }
+
                         if (battleitem == "mend")
                         {
-                            Console.WriteLine($"You use what little scraps of torn fabric in your pocket to mend you wounds\n" +
-                                              $"You mend {hero.Mend(RollD6())} health");
+                            Console.WriteLine(
+                                $"You use what little scraps of torn fabric in your pocket to mend you wounds\n" +
+                                $"You mend {hero.Mend(RollD6())} health");
                             Console.ReadKey();
                         }
+
                         break;
                     }
                 } while (true);
@@ -115,7 +117,7 @@ namespace TextAdventure
                         if (RollD6() >= 4)
                         {
                             Console.Clear();
-                            Console.WriteLine($"The {enemy.enemyName} used Tackle");
+                            Console.WriteLine($"The {enemy.enemyName}" + $"{enemy.enemyAttack}");
                             Console.WriteLine("You took " + $"{hero.TakeDamage(enemy.GiveDamage())}" + " damage");
                             Console.ReadLine();
                         }
@@ -151,13 +153,13 @@ namespace TextAdventure
                         break;
                 }
             }
+
             if (hero.HeroIsDead())
             {
                 Console.Clear();
                 Console.WriteLine($"You, brave {hero.name} were defeated in battle by {enemy.enemyName}");
                 Console.ReadKey();
                 hero.location = ("quit");
-
             }
         }
 
@@ -170,9 +172,8 @@ namespace TextAdventure
 
         static int Weapon(Hero hero, Enemy enemy) // Weapons
         {
-
             Console.Clear();
-            Console.WriteLine("You used ["+ $"{hero.equip}" + "]");
+            Console.WriteLine("You used [" + $"{hero.equip}" + "]");
             Console.ReadLine();
             int amount = 0;
 
@@ -197,7 +198,7 @@ namespace TextAdventure
                     amount = 0;
                 }
             }
-            
+
             if (hero.equip == "wooden sword")
             {
                 amount = 5;
@@ -266,21 +267,22 @@ namespace TextAdventure
 
         static void Tableroom(Hero hero) // Tableroom rum
         {
-
             Console.Clear();
             hero.BattleItems.Add("wooden sword");
-            Console.WriteLine("As you wake up on the floor in an dark, unknown area, you see a faint, warm light from a cracked wooden door.\n" +
-                              "Beside you is a Wooden Sword...\n" +
-                              "Confused, you pick up the weapon and start moving towards the door.\n" +
-                              "As you make your way into the new room you spot two cracked, mossy stone pedestals");
+            Console.WriteLine(
+                "As you wake up on the floor in an dark, unknown area, you see a faint, warm light from a cracked wooden door.\n" +
+                "Beside you is a Wooden Sword...\n" +
+                "Confused, you pick up the weapon and start moving towards the door.\n" +
+                "As you make your way into the new room you spot two cracked, mossy stone pedestals");
             bool finished = false;
             do
             {
-                Console.WriteLine("On the pedestals you recognize the what seems to be a rusty iron knife, and a single, golden key\n" +
-                                  "You spot a contraption linked to the two items.\n" +
-                                  "As you look up, you spot cages over the pedestals and you suspect if you pick an item\n" +
-                                  "the other cage will .\n" +
-                                  "Greed is one of the biggest murderers you think to yourself");
+                Console.WriteLine(
+                    "On the pedestals you recognize the what seems to be a rusty iron knife, and a single, golden key\n" +
+                    "You spot a contraption linked to the two items.\n" +
+                    "As you look up, you spot cages over the pedestals and you suspect if you pick an item\n" +
+                    "the other cage will .\n" +
+                    "Greed is one of the biggest murderers you think to yourself");
 
                 string tableroomItem = Ask("Which one do you choose?" + " ([Key],[Knife], [None] )")
                     .Trim().ToLower();
@@ -325,20 +327,18 @@ namespace TextAdventure
                             break;
                     }
                 }
-
             } while (!finished);
-
-
         }
 
         static void Corridor(Hero hero) // Corridor
         {
             Console.Clear();
 
-            Console.WriteLine("As you carry on with a new item in your pocket, you continue your way into a long, dimly lit corridor.\n" +
-                              "The corridor splits in two after what feels like an eternity.\n" +
-                              "To the left is a grand, rather unusual looking door, with a big padlock which engulfs the door, making it impossible to open it without a key.\n" +
-                              "To the right is a normal looking door, the kind you've encountered before");
+            Console.WriteLine(
+                "As you carry on with a new item in your pocket, you continue your way into a long, dimly lit corridor.\n" +
+                "The corridor splits in two after what feels like an eternity.\n" +
+                "To the left is a grand, rather unusual looking door, with a big padlock which engulfs the door, making it impossible to open it without a key.\n" +
+                "To the right is a normal looking door, the kind you've encountered before");
             string direktion = Ask("Which way do you want to go?" + " [Left] or [Right] ").Trim().ToLower();
             if (direktion == "left")
             {
@@ -351,7 +351,8 @@ namespace TextAdventure
                 }
                 else
                 {
-                    Console.WriteLine("You regret you didn't pick the key when you had the choice, and you turn away and enter the other room");
+                    Console.WriteLine(
+                        "You regret you didn't pick the key when you had the choice, and you turn away and enter the other room");
                     Console.ReadLine();
                     hero.location = "puzzleroom";
                 }
@@ -383,13 +384,10 @@ namespace TextAdventure
             }
 
             hero.location = "puzzleroom";
-
-
         }
 
         static void Puzzleroom(Hero hero) // Puzzleroom
         {
-
             Console.Clear();
             Console.WriteLine("You enter the room and leaning against one of the walls you find a corpse\n" +
                               "You approach the corpse and it looks like it has something in its pocket");
@@ -407,7 +405,6 @@ namespace TextAdventure
                             hero.Items.Add("oil");
                             Console.ReadLine();
                             hero.location = "fightroom1";
-
                         }
                         else
                         {
@@ -416,7 +413,6 @@ namespace TextAdventure
                             hero.BattleItems.Add("potion");
                             Console.ReadLine();
                             hero.location = "fightroom1";
-
                         }
 
                         break;
@@ -441,12 +437,11 @@ namespace TextAdventure
                 Console.ReadLine();
                 hero.location = "fightroom1";
             }
-
         }
 
         static void Fightroom1(Hero hero) //Fightroom1
         {
-            Enemy enemy1 = new Enemy("Sentient Rock", 20, 3, "stubbed your toe");
+            Enemy enemy1 = new Enemy("Sentient Rock", 20, 3, " stubbed your toe");
 
             Console.Clear();
             Console.WriteLine("You enter to find a room dimly lit with torches lining the walls. \n" +
@@ -461,7 +456,6 @@ namespace TextAdventure
             if (hero.HeroIsDead())
             {
                 hero.location = "quit";
-
             }
             else
             {
@@ -474,7 +468,6 @@ namespace TextAdventure
 
         static void Preproom(Hero hero) //preproom
         {
-
             Console.Clear();
             Console.WriteLine("You walk into the new room, the first thing to catch your eye is" +
                               " the huge door made out of cast iron straight ahead. \n" +
@@ -512,12 +505,11 @@ namespace TextAdventure
                 Console.WriteLine("You ignore the workbench");
                 hero.location = "bossroom";
             }
-
         }
 
         static void Bossroom(Hero hero) //Bossrum
         {
-            Enemy enemy2 = new Enemy("Dark Knight", 100, 10, "Slashed you");
+            Enemy enemy2 = new Enemy("Dark Knight", 100, 10, " slashed you with its sword");
             Console.Clear();
             Console.WriteLine("As you open the doors to the grand hall you feel great pressure from the within.\n" +
                               "You continue deeper as thick fog covers the sides and corners of the spacious hall.\n" +
@@ -527,11 +519,10 @@ namespace TextAdventure
             Console.ReadLine();
 
             Fight(hero, enemy2);
-            
+
             if (hero.HeroIsDead())
             {
                 hero.location = "quit";
-
             }
             else
             {
@@ -565,17 +556,16 @@ namespace TextAdventure
                         Console.ReadLine();
                         hero.location = "abyss";
                         break;
-            }
-            
+                }
             }
         }
 
         static void Abyss(Hero hero) //Abyss
         {
-            Enemy enemy3 = new Enemy("Skeleton", 50, 7, "bonked you with a femur");
-            Enemy enemy4 = new Enemy("Gorgon", 80, 6, "swiped at you with its tail");
-            Enemy enemy5 = new Enemy("Cyclops", 90, 7, "picks you up and throws you against the wall");
-            hero.BattleItems.Add ("sus potion");
+            Enemy enemy3 = new Enemy("Skeleton", 50, 7, " bonked you with a femur");
+            Enemy enemy4 = new Enemy("Gorgon", 80, 6, " swiped at you with its tail");
+            Enemy enemy5 = new Enemy("Cyclops", 90, 7, " picked you up and throws you against the wall");
+            hero.BattleItems.Add("sus potion");
             Console.Clear();
             Console.WriteLine(
                 "You fall for an undetermined amount of time and suddenly see something approaching rapidly!\n" +
@@ -592,7 +582,7 @@ namespace TextAdventure
                 enemy4 = null;
                 if (!hero.HeroIsDead())
                 {
-                    Fight(hero,enemy5);
+                    Fight(hero, enemy5);
                     enemy5 = null;
                     if (!hero.HeroIsDead())
                     {
@@ -616,17 +606,13 @@ namespace TextAdventure
                                 Console.ReadLine();
                                 hero.location = "quit";
                                 break;
-                                
                         }
-                        
-                        
                     }
                 }
             }
             else hero.location = "quit";
-            
         }
-        
+
         static void Quit(Hero hero) // Quit
         {
             Console.Clear();
@@ -677,7 +663,6 @@ namespace TextAdventure
                 else if (hero.location == "Nyckelrum")
                 {
                     Nyckelrum(hero);
-
                 }
                 else if (hero.location == "puzzleroom")
                 {
@@ -712,7 +697,6 @@ namespace TextAdventure
                 {
                     Quit(hero);
                 }
-
             } while (!hero.HeroIsDead());
         }
     }

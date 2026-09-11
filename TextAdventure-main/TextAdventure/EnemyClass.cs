@@ -29,7 +29,7 @@
             int amount = enemyDamage;
             if (empower)
             {
-                amount += enemyDamage / 2;
+                amount += enemyDamage / 3;
             }
 
             empower = false;
@@ -38,8 +38,8 @@
       
         public int Rest()
         {
-            enemyHealth += enemyMax/10;
-            return enemyMax / 10;
+            enemyHealth += enemyMax/20;
+            return enemyMax / 20;
         }
 
         public bool EnemyIsDead()
