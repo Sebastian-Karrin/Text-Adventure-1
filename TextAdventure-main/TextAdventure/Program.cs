@@ -51,13 +51,14 @@ namespace TextAdventure
                                       $"{enemy.enemyName} Health: {enemy.enemyHealth}");
 
 
-                    Console.WriteLine("Your Choices:  ");
+                    Console.WriteLine("Your Choices:  \n" +
+                                      "");
                     foreach (string BattleItem in hero.BattleItems)
                     {
                         Console.Write("[" + BattleItem + "]" + ", ");
                     }
 
-                    string battleitem = Ask("What do you choose?").Trim().ToLower();
+                    string battleitem = Ask("What do you choose? ").Trim().ToLower();
 
                     if (hero.BattleItems.Contains(battleitem))
                     {
@@ -273,7 +274,7 @@ namespace TextAdventure
                 "As you wake up on the floor in an dark, unknown area, you see a faint, warm light from a cracked wooden door.\n" +
                 "Beside you is a Wooden Sword...\n" +
                 "Confused, you pick up the weapon and start moving towards the door.\n" +
-                "As you make your way into the new room you spot two cracked, mossy stone pedestals");
+                "As you make your way into the new room you spot two mossy stone pedestals");
             bool finished = false;
             do
             {
@@ -281,10 +282,10 @@ namespace TextAdventure
                     "On the pedestals you recognize the what seems to be a rusty iron knife, and a single, golden key\n" +
                     "You spot a contraption linked to the two items.\n" +
                     "As you look up, you spot cages over the pedestals and you suspect if you pick an item\n" +
-                    "the other cage will .\n" +
+                    "the other cage will fall.\n" +
                     "Greed is one of the biggest murderers you think to yourself");
 
-                string tableroomItem = Ask("Which one do you choose?" + " ([Key],[Knife], [None] )")
+                string tableroomItem = Ask("Which one do you choose?" + " [Key],[Knife], [None] ")
                     .Trim().ToLower();
                 if (tableroomItem == "key" || tableroomItem == "knife")
                 {
@@ -301,7 +302,8 @@ namespace TextAdventure
                                 hero.BattleItems.Add($"{tableroomItem}");
                             }
 
-                            Console.WriteLine($"You picked up the {tableroomItem}!");
+                            Console.WriteLine($"You picked up the {tableroomItem}!\n" +
+                                              $"As you carry on with a new item in your pocket, you continue your way into a long, dimly lit corridor.");
                             hero.location = "Corridor";
                             Console.ReadLine();
                             finished = true;
@@ -317,7 +319,8 @@ namespace TextAdventure
                     switch (AskYesOrNo("Do you want to choose none?"))
                     {
                         case true:
-                            Console.WriteLine("You didnt pick anything up!");
+                            Console.WriteLine("You didnt pick anything up!\n" +
+                                              "As you carry on without a new item, you continue your way into a long, dimly lit corridor.");
                             hero.location = "Corridor";
                             Console.ReadLine();
                             finished = true;
@@ -335,7 +338,6 @@ namespace TextAdventure
             Console.Clear();
 
             Console.WriteLine(
-                "As you carry on with a new item in your pocket, you continue your way into a long, dimly lit corridor.\n" +
                 "The corridor splits in two after what feels like an eternity.\n" +
                 "To the left is a grand, rather unusual looking door, with a big padlock which engulfs the door, making it impossible to open it without a key.\n" +
                 "To the right is a normal looking door, the kind you've encountered before");
@@ -421,7 +423,7 @@ namespace TextAdventure
                         Console.Clear();
                         Console.WriteLine("You reach into the corpses pocket and you feel the sting of pain!\n" +
                                           "You pull your hand out of the corpses pocket and you see a snake" +
-                                          " slithering out.\n" +
+                                          "slithering out.\n" +
                                           "You lose 10hp");
                         hero.TakeDamage(10);
                         Console.WriteLine("Current health: " + hero.Health);
@@ -445,7 +447,7 @@ namespace TextAdventure
 
             Console.Clear();
             Console.WriteLine("You enter to find a room dimly lit with torches lining the walls. \n" +
-                              "In the center of the room lies an unassuming looking rock\n" +
+                              "In the center of the room lies an unassuming looking rock. \n" +
                               "It looks small enough that you could lift it, but big enough that it might prove difficult!\n" +
                               "As you approach the rock it lunges at you, and you find yourself barely able to dodge," +
                               $"it is then you realize. Its not an ordinary rock, its a {enemy1.enemyName}");
@@ -462,6 +464,7 @@ namespace TextAdventure
                 Console.Clear();
 
                 Console.WriteLine("After a tiring battle with the rock you push onward");
+                Console.ReadLine();
                 hero.location = "preproom";
             }
         }
@@ -472,7 +475,7 @@ namespace TextAdventure
             Console.WriteLine("You walk into the new room, the first thing to catch your eye is" +
                               " the huge door made out of cast iron straight ahead. \n" +
                               "The second thing you see is what looks to be a workbench in the center of the room");
-            if (AskYesOrNo("Do you want to interact with the workbench?"))
+            if (AskYesOrNo("Do you want to interact with the workbench? "))
             {
                 if (hero.BattleItems.Contains("gun") && hero.Items.Contains("oil"))
                 {
@@ -502,7 +505,8 @@ namespace TextAdventure
             else
             {
                 Console.Clear();
-                Console.WriteLine("You ignore the workbench");
+                Console.WriteLine("You ignore the workbench!");
+                Console.ReadLine();
                 hero.location = "bossroom";
             }
         }
@@ -514,7 +518,7 @@ namespace TextAdventure
             Console.WriteLine("As you open the doors to the grand hall you feel great pressure from the within.\n" +
                               "You continue deeper as thick fog covers the sides and corners of the spacious hall.\n" +
                               "Suddenly, as you reach the dead center of the eerie room, something big lands in front of you with a thud.\n" +
-                              "Clad in armor as black as tar, its eyes filled with enough rage that only the devil could match them, equipped with a big, bloody Sword\n" +
+                              "Clad in armor black as tar, its eyes filled with enough rage that only the devil could match them, equipped with a big, bloody Sword\n" +
                               "You feel your pulse increase as you ready yourself for what seems to be a dangerous battle");
             Console.ReadLine();
 
@@ -537,7 +541,7 @@ namespace TextAdventure
                 Console.Clear();
                 Console.WriteLine("This is it...");
                 Console.ReadLine();
-                switch (AskYesOrNo("Do you want to leave through the door?"))
+                switch (AskYesOrNo("Do you want to leave through the door? "))
                 {
                     case true:
                         Console.Clear();
@@ -562,7 +566,7 @@ namespace TextAdventure
 
         static void Abyss(Hero hero) //Abyss
         {
-            Enemy enemy3 = new Enemy("Skeleton", 50, 7, " bonked you with a femur");
+            Enemy enemy3 = new Enemy("Skeleton", 50, 5, " bonked you with a femur");
             Enemy enemy4 = new Enemy("Gorgon", 80, 6, " swiped at you with its tail");
             Enemy enemy5 = new Enemy("Cyclops", 90, 7, " picked you up and throws you against the wall");
             hero.BattleItems.Add("sus potion");
@@ -619,7 +623,7 @@ namespace TextAdventure
             Console.WriteLine(
                 "As you feel unconsciousness approaching you get an ominous feeling at the back of your neck!");
             Console.ReadLine();
-            switch (!AskYesOrNo("Do you want to quit the game?"))
+            switch (!AskYesOrNo("Do you want to quit the game? "))
             {
                 case true:
                     hero.Items.Clear();
@@ -641,7 +645,8 @@ namespace TextAdventure
 
         static void Main(string[] args) // Main String
         {
-            Console.WriteLine("Lets play Dungeon Crawl 1!!!");
+            Console.WriteLine("Eternal Hero!!!");
+            Console.ReadLine();
 
             Hero hero = new Hero();
 
