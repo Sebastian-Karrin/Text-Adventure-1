@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Data.Common;
+using System.Net;
+using System.Net.Quic;
 using System.Reflection.Metadata.Ecma335;
 
 namespace TextAdventure
@@ -35,6 +36,7 @@ namespace TextAdventure
 */
     class Program
     {
+
         static void Fight(Hero hero, Enemy enemy) // Fight
         {
             Console.Clear();
@@ -53,7 +55,7 @@ namespace TextAdventure
                     Console.WriteLine("Your Choices: ");
                     foreach (string BattleItem in hero.BattleItems)
                     {
-                        Console.Write(BattleItem + ", ");
+                        Console.Write("[" + BattleItem + "]" + ", ");
                     }
 
                     string battleitem = Ask("What do you choose?").Trim().ToLower();
@@ -88,58 +90,53 @@ namespace TextAdventure
                     }
                 } while (true);
 
-                switch (enemy.EnemyIsDead())
+                Console.Clear();
+                Console.WriteLine($"{enemy.enemyName}'s Turn");
+                Console.ReadLine();
+                int monsterdecision = RollD6();
+                if (RollD6() >= 4)
                 {
-                    case false:
-                        Console.Clear();
-                        Console.WriteLine($"{enemy.enemyName}'s Turn");
-                        Console.ReadLine();
-                        int monsterdecision = RollD6();
-                        if (RollD6() >= 4)
-                        {
+                    Console.Clear();
+                    Console.WriteLine($"The {enemy.enemyName} used Tackle");
+                    Console.WriteLine("You took " + $"{hero.TakeDamage(enemy.GiveDamage())}" + " damage");
+                    Console.ReadLine();
+                }
+                else if (monsterdecision >= 2 && monsterdecision < 4)
+                    switch (enemy.empower)
+                    {
+                        case false:
                             Console.Clear();
-                            Console.WriteLine($"The {enemy.enemyName} used Tackle");
-                            Console.WriteLine("You took " + $"{hero.TakeDamage(enemy.GiveDamage())}" + " damage");
+                            Console.WriteLine($"The {enemy.enemyName} used Empower");
+                            enemy.empower = true;
+                            Console.WriteLine("Next attack is going to be stronger!");
                             Console.ReadLine();
-                        }
-                        else if (monsterdecision >= 2 && monsterdecision < 4)
-                            switch (enemy.empower)
-                            {
-                                case false:
-                                    Console.Clear();
-                                    Console.WriteLine($"The {enemy.enemyName} used Empower");
-                                    enemy.empower = true;
-                                    Console.WriteLine("Next attack is going to be stronger!");
-                                    Console.ReadLine();
-                                    break;
-                                case true:
-                                    break;
-                            }
-                        else
-                        {
-                            Console.Clear();
-                            Console.WriteLine($"The {enemy.enemyName} is resting");
-                            Console.WriteLine($"The {enemy.enemyName} healed {enemy.Rest()} health");
-                            Console.ReadLine();
-                        }
-
-                        hero.block = false;
-                        break;
-                    case true:
-                        Console.Clear();
-                        Console.WriteLine($"You defeated {enemy.enemyName}");
-                        Console.ReadLine();
-                        break;
+                            break;
+                        case true:
+                            break;
+                    }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine($"The {enemy.enemyName} is resting");
+                    Console.WriteLine($"The {enemy.enemyName} healed {enemy.Rest()} health");
+                    Console.ReadLine();
                 }
 
+                hero.block = false;
+            }
+
+            if (enemy.EnemyIsDead())
+            {
+                Console.Clear();
+                Console.WriteLine($"You defeated {enemy.enemyName}");
             }
 
             if (hero.HeroIsDead())
             {
                 Console.Clear();
                 Console.WriteLine($"You, brave {hero.name} were defeated in battle by {enemy.enemyName}");
-                hero.location = "quit";
-                Console.ReadLine();
+                Console.ReadKey();
+                hero.location = ("quit");
 
             }
         }
@@ -151,7 +148,7 @@ namespace TextAdventure
             return roll;
         }
 
-        static int Weapon(Hero hero, Enemy enemy) // Weapon
+        static int Weapon(Hero hero, Enemy enemy) // Weapons
         {
 
             Console.Clear();
@@ -161,17 +158,12 @@ namespace TextAdventure
 
             if (hero.equip == "gun")
             {
-                switch (RollD6() >= 4)
+                if (RollD6() >= 4) amount = 15;
+                else
                 {
-                    case true:
-                        amount = 15;
-                        break;
-
-                    case false:
-                        Console.WriteLine("The gun jammed.....");
-                        Console.ReadLine();
-                        amount = 0;
-                        break;
+                    Console.WriteLine("The gun jammed.....");
+                    Console.ReadLine();
+                    amount = 0;
                 }
             }
 
@@ -407,12 +399,11 @@ namespace TextAdventure
                         hero.location = "fightroom1";
                         break;
                 }
-
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("You ignore the corpse");
+                Console.WriteLine("You ignore the corpse!");
                 Console.ReadLine();
                 hero.location = "fightroom1";
             }
@@ -421,7 +412,7 @@ namespace TextAdventure
 
         static void Fightroom1(Hero hero) //Fightroom1
         {
-            Enemy enemy1 = new Enemy("Sentient Rock", 20, 200, "stubbs your toe");
+            Enemy enemy1 = new Enemy("Sentient Rock", 20, 5, "stubbed your toe");
 
             Console.Clear();
             Console.WriteLine("You enter to find a room dimly lit with torches lining the walls. \n" +
@@ -430,51 +421,63 @@ namespace TextAdventure
                               "As you approach the rock it lunges at you, and you find yourself barely able to dodge," +
                               $"it is then you realize. Its not an ordinary rock, its a {enemy1.enemyName}");
             Console.ReadLine();
+
             Fight(hero, enemy1);
             enemy1 = null;
-            hero.location = "preproom";
+            if (hero.HeroIsDead())
+            {
+                hero.location = "quit";
+
+            }
+            else
+            {
+                Console.Clear();
+
+                Console.WriteLine("After a tiring battle with the rock you push onward");
+                hero.location = "preproom";
+            }
         }
 
-        static void Preproom(Hero hero) //Preperation room
+        static void Preproom(Hero hero) //preproom
         {
+
             Console.Clear();
-            Console.WriteLine("As you enter the new room the first thing that catches your eye is the \n" +
-                              "giant door made of cast iron. The second thing, a workbench standing in the center of the room");
-            Console.ReadLine();
+            Console.WriteLine("You walk into the new room, the first thing to catch your eye is" +
+                              " the huge door made out of cast iron straight ahead. \n" +
+                              "The second thing you see is what looks to be a workbench in the center of the room");
             if (AskYesOrNo("Do you want to interact with the workbench?"))
             {
-                switch (hero.Items.Contains("oil") && hero.BattleItems.Contains("gun"))
+                if (hero.BattleItems.Contains("gun") && hero.Items.Contains("oil"))
                 {
-                    case true:
-                        Console.Clear();
-                        Console.WriteLine(
-                            "As you interact with the workbench you find it has the exact tools necesary to lubricate a gun. \n" +
-                            "Lucky you!!!\n" +
-                            "After applying the oil from your inventory to your gun, the gun suddenly feels more powerful");
-                        Console.ReadLine();
-                        hero.Items.Remove("oil");
-                        hero.BattleItems.Remove("gun");
-                        hero.BattleItems.Add("fine gun");
-                        hero.location = "bossroom";
-                        break;
-                    case false:
-                        Console.Clear();
-                        Console.WriteLine(
-                            "As you interact with the workbench you find it has the exact tools necesary to lubricate a gun.\n" +
-                            "You take a look at your inventory and find you lack the necesary items\n" +
-                            "Too bad!");
-                        Console.ReadLine();
-                        hero.location = "bossroom";
-                        break;
+                    Console.Clear();
+                    Console.WriteLine(
+                        "You approach the workbench and find that it has the exact tools you need to oil your gun\n" +
+                        "Lucky you!!!\n" +
+                        "After spending some time applying the oil to your gun,\n" +
+                        " it seems like its suddenly more reliable!");
+                    hero.BattleItems.Remove("gun");
+                    hero.Items.Remove("oil");
+                    hero.BattleItems.Add("fine gun");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine(
+                        "You approach the workbench and find that it has the exact tools you need to oil a gun!\n" +
+                        "Too bad you dont have the items needed D:!\n" +
+                        "You move on!");
+                    Console.ReadLine();
+                    hero.location = "bossroom";
                 }
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine("You ignore the workbench");
-                Console.ReadLine();
                 hero.location = "bossroom";
             }
+
         }
 
         static void Bossroom(Hero hero) //Bossrum
@@ -502,26 +505,27 @@ namespace TextAdventure
             Console.ReadLine();
         }
 
-        static void Quit(Hero hero) //Game over
+        static void Quit(Hero hero) // Quit
         {
             Console.Clear();
-            switch (!AskYesOrNo("Do you want to quit the game"))
+            Console.WriteLine(
+                "As you feel unconsciousness approaching you get an ominous feeling at the back of your neck!\n" +
+                "As you wake up not knowing how much time has passed,");
+            Console.ReadLine();
+            switch (!AskYesOrNo("Do you want to quit the game?"))
             {
                 case true:
                     hero.Items.Clear();
                     hero.BattleItems.Clear();
                     hero.Health = 100;
+                    hero.HeroIsDead();
                     hero.location = "newgame";
                     break;
                 case false:
                     Environment.Exit(0);
                     break;
-
             }
-
         }
-
-
 
         static void Main(string[] args) // Main String
         {
@@ -529,7 +533,8 @@ namespace TextAdventure
 
             Hero hero = new Hero();
 
-            while (!hero.HeroIsDead()) 
+
+            do
             {
                 if (hero.location == "newgame")
                 {
@@ -546,10 +551,15 @@ namespace TextAdventure
                 else if (hero.location == "Nyckelrum")
                 {
                     Nyckelrum(hero);
+
                 }
                 else if (hero.location == "puzzleroom")
                 {
                     Puzzleroom(hero);
+                }
+                else if (hero.location == "fightroom1")
+                {
+                    Fightroom1(hero);
                 }
                 else if (hero.location == "fightroom1")
                 {
@@ -566,11 +576,14 @@ namespace TextAdventure
                 else
                 {
                     Console.Error.WriteLine($"You forgot to implement '{hero.location}'!");
-
                 }
-            } 
-            Quit(hero);
+
+                if (hero.location == "quit")
+                {
+                    Quit(hero);
+                }
+
+            } while (!hero.HeroIsDead());
         }
     }
 }
-

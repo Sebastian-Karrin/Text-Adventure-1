@@ -7,6 +7,7 @@
         public int enemyDamage;
         private int enemyMax;
         public string enemyAttack;
+        
         public bool empower;
         
         public Enemy(string name, int health, int damage, string attack)
@@ -28,7 +29,7 @@
             int amount = enemyDamage;
             if (empower)
             {
-                amount += 2;
+                amount += enemyDamage / 2;
             }
 
             empower = false;
