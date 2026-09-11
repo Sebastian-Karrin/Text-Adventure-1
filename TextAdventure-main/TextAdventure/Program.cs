@@ -269,17 +269,20 @@ namespace TextAdventure
 
             Console.Clear();
             hero.BattleItems.Add("wooden sword");
-            Console.WriteLine("You are equipped with a Wooden Sword!");
+            Console.WriteLine("As you wake up on the floor in an dark, unknown area, you see a faint, warm light from a cracked wooden door.\n" +
+                              "Beside you is a Wooden Sword...\n" +
+                              "Confused, you pick up the weapon and start moving towards the door.\n" +
+                              "As you make your way into the new room you spot two cracked, mossy stone pedestals");
             bool finished = false;
             do
             {
-                Console.WriteLine("You are to slay the monster at the end of the dungeon" +
-                                  "" +
-                                  " In front of you is a stone table with two items on it," +
-                                  " A Key and a Knife" +
-                                  " You can only pick up one of these items.");
+                Console.WriteLine("On the pedestals you recognize the what seems to be a rusty iron knife, and a single, golden key\n" +
+                                  "You spot a contraption linked to the two items.\n" +
+                                  "As you look up, you spot cages over the pedestals and you suspect if you pick an item\n" +
+                                  "the other cage will .\n" +
+                                  "Greed is one of the biggest murderers you think to yourself");
 
-                string tableroomItem = Ask("Which one do you choose?" + " ([Key],[Knife], [None])")
+                string tableroomItem = Ask("Which one do you choose?" + " ([Key],[Knife], [None] )")
                     .Trim().ToLower();
                 if (tableroomItem == "key" || tableroomItem == "knife")
                 {
@@ -332,21 +335,23 @@ namespace TextAdventure
         {
             Console.Clear();
 
-            Console.WriteLine("You exit the room with the table and you find yourself standing in the dark" +
-                              "hallway. You kan either enter the room to the right, or the room to the left");
+            Console.WriteLine("As you carry on with a new item in your pocket, you continue your way into a long, dimly lit corridor.\n" +
+                              "The corridor splits in two after what feels like an eternity.\n" +
+                              "To the left is a grand, rather unusual looking door, with a big padlock which engulfs the door, making it impossible to open it without a key.\n" +
+                              "To the right is a normal looking door, the kind you've encountered before");
             string direktion = Ask("Which way do you want to go?" + " [Left] or [Right] ").Trim().ToLower();
             if (direktion == "left")
             {
                 if (hero.Items.Contains("key"))
                 {
-                    Console.WriteLine("You enter the key into the keyhole and the door opens");
+                    Console.WriteLine("You enter the golden key into the padlock, and the door magically disappears");
                     Console.ReadLine();
                     hero.location = "Nyckelrum";
                     hero.Items.Remove("key");
                 }
                 else
                 {
-                    Console.WriteLine("You didnt have the key so you enter the other room");
+                    Console.WriteLine("You regret you didn't pick the key when you had the choice, and you turn away and enter the other room");
                     Console.ReadLine();
                     hero.location = "puzzleroom";
                 }
@@ -364,7 +369,7 @@ namespace TextAdventure
         {
             Console.Clear();
             Console.WriteLine("You enter a gloomy room \n" +
-                              "You can make out a faint sillhouette of a oxidized copper chest\n" +
+                              "You can make out a faint silhouette of a oxidized copper chest\n" +
                               "As you make your way to it, you feel the presence of something mighty\n" +
                               "Inside of the chest you find a Weathered Gun\n" +
                               "But you only have enough space in your inventory for one of the weapons.\n");
@@ -398,7 +403,7 @@ namespace TextAdventure
                         {
                             Console.Clear();
                             Console.WriteLine("You find some kind of oil\n" +
-                                              "Maybe it's apliable to a gun?");
+                                              "Maybe it's applicable to a gun?");
                             hero.Items.Add("oil");
                             Console.ReadLine();
                             hero.location = "fightroom1";
