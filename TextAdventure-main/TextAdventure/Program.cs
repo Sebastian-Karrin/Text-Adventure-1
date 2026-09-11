@@ -200,13 +200,13 @@ namespace TextAdventure
             
             if (hero.equip == "wooden sword")
             {
-                amount = 100;
+                amount = 5;
             }
 
             if (hero.equip == "knife")
             {
                 int i;
-                for (i = 0; i < 5; i++)
+                for (i = 0; i < 7; i++)
                 {
                     if (RollD6() <= 5) ;
                     else break;
